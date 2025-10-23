@@ -1,4 +1,4 @@
-+}<template>
+<template>
   <div id="app">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
@@ -13,11 +13,21 @@
         
         <div class="collapse navbar-collapse" id="navbarNav">
           <div class="navbar-nav ms-auto">
+            <router-link class="nav-link" to="/">
+              🏠 Inicio
+            </router-link>
             <router-link class="nav-link" to="/productos">
               📦 Productos
             </router-link>
             <router-link class="nav-link" to="/about">
               ℹ️ Acerca de
+            </router-link>
+            <router-link to="/carrito" class="nav-link position-relative">
+              🛒 Carrito
+              <span v-if="$pinia.state.value.carrito?.items?.length > 0" 
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ $pinia.state.value.carrito?.items?.length }}
+              </span>
             </router-link>
           </div>
         </div>
@@ -25,7 +35,7 @@
     </nav>
 
     <!-- Contenido Principal -->
-    <main class="container-fluid py-4">
+    <main class="container-fluid p-0">
       <router-view />
     </main>
 

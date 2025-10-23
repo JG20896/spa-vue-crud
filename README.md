@@ -1,19 +1,19 @@
-# ??? SPA Vue - CRUD de Productos con Carrito 
+#  SPA Vue - CRUD de Productos con Carrito 
  
-## Descripci¢n 
+## DescripciÃ³n 
  
 Single Page Application desarrollada con Vue 3 que implementa un CRUD completo de productos y un carrito de compras. 
  
-## Caracter¡sticas 
+## CaracterÃ­sticas 
  
-- ? CRUD completo de productos 
-- ?? Carrito de compras con persistencia 
-- ?? 5 rutas con Vue Router 
-- ?? Estado global con Pinia 
-- ??? Productos con im genes 
-- ?? Dise¤o responsive con Bootstrap 
+-  CRUD completo de productos 
+-  Carrito de compras con persistencia 
+-  5 rutas con Vue Router 
+-  Estado global con Pinia 
+-  Productos con imÂ genes 
+-  DiseÂ¤o responsive con Bootstrap 
  
-## Tecnolog¡as 
+## TecnologÃ­as 
  
 - Vue 3 
 - Pinia 
@@ -21,7 +21,7 @@ Single Page Application desarrollada con Vue 3 que implementa un CRUD completo d
 - Bootstrap 5 
 - Vite 
  
-## Instalaci¢n 
+## InstalaciÃ³n 
  
 \`\`\`bash 
 npm install 
@@ -29,5 +29,7 @@ npm run dev
 \`\`\` 
  
 ## Equipo de Desarrollo 
- 
-[Agregar nombres del equipo aqu¡] 
+ Jose Gabriel Hernandez Perez No. control 23270690
+ IVAN ALEXANDER PEREZ ICHIN No. Control 23270672
+ RICARDO JORDAN ESCOBAR OVANDO No. Control 23271437
+ DIEGO MARTINEZ GOMEZ No. Control 23271428

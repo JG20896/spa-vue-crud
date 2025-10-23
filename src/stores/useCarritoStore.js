@@ -2,71 +2,69 @@ import { defineStore } from 'pinia'
 
 export const useCarritoStore = defineStore('carrito', {
   state: () => ({
-    carrito: []
+    items: []
   }),
 
-  actions: {
-    agregarAlCarrito(producto) {
-      const productoExistente = this.carrito.find(item => item.id === producto.id)
-      
-      if (productoExistente) {
-        productoExistente.cantidad += 1
-      } else {
-        this.carrito.push({
-          ...producto,
-          cantidad: 1
-        })
-      }
-      
-      // Persistir en localStorage (opcional)
-      this.persistirCarrito()
+  getters: {
+    estaEnCarrito: (state) => (id) => {
+      return state.items.some(item => item.id === id)
     },
-
-    eliminarDelCarrito(id) {
-      this.carrito = this.carrito.filter(item => item.id !== id)
-      this.persistirCarrito()
+    
+    totalItems: (state) => {
+      return state.items.length
     },
-
-    vaciarCarrito() {
-      this.carrito = []
-      this.persistirCarrito()
+    
+    totalPrecio: (state) => {
+      return state.items.reduce((total, item) => total + item.precio, 0)
     },
-
-    actualizarCantidad(id, cantidad) {
-      const producto = this.carrito.find(item => item.id === id)
-      if (producto) {
-        producto.cantidad = cantidad
-        if (producto.cantidad <= 0) {
-          this.eliminarDelCarrito(id)
+    
+    itemsAgrupados: (state) => {
+      const agrupados = state.items.reduce((grupos, item) => {
+        const existente = grupos.find(g => g.id === item.id)
+        if (existente) {
+          existente.cantidad++
+          existente.subtotal = existente.precio * existente.cantidad
+        } else {
+          grupos.push({
+            ...item,
+            cantidad: 1,
+            subtotal: item.precio
+          })
         }
-      }
-      this.persistirCarrito()
-    },
-
-    // Persistencia en localStorage
-    persistirCarrito() {
-      localStorage.setItem('carrito', JSON.stringify(this.carrito))
-    },
-
-    cargarCarrito() {
-      const carritoGuardado = localStorage.getItem('carrito')
-      if (carritoGuardado) {
-        this.carrito = JSON.parse(carritoGuardado)
-      }
+        return grupos
+      }, [])
+      
+      return agrupados
     }
   },
 
-  getters: {
-    totalArticulos: (state) => {
-      return state.carrito.reduce((total, item) => total + item.cantidad, 0)
+  actions: {
+    agregarAlCarrito(producto) {
+      this.items.push({ ...producto })
     },
 
-    totalPrecio: (state) => {
-      return state.carrito.reduce((total, item) => total + (item.precio * item.cantidad), 0)
+    removerDelCarrito(id) {
+      this.items = this.items.filter(item => item.id !== id)
     },
 
-    estaEnCarrito: (state) => (id) => {
-      return state.carrito.some(item => item.id === id)
+    limpiarCarrito() {
+      if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
+        this.items = []
+      }
+    },
+    
+    aumentarCantidad(id) {
+      const item = this.items.find(item => item.id === id)
+      if (item) {
+        this.items.push({ ...item })
+      }
+    },
+    
+    disminuirCantidad(id) {
+      const index = this.items.findIndex(item => item.id === id)
+      if (index !== -1) {
+        this.items.splice(index, 1)
+      }
     }
   }
 })

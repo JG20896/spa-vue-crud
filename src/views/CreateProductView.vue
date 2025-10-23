@@ -1,14 +1,19 @@
 <template>
   <div class="create-product-view">
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-lg-8">
         <div class="card">
-          <div class="card-header">
-            <h3 class="card-title mb-0">➕ Crear Nuevo Producto</h3>
+          <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+              <h3 class="card-title mb-0">➕ Crear Nuevo Producto</h3>
+              <router-link to="/productos" class="btn btn-light btn-sm">
+                ← Volver a Productos
+              </router-link>
+            </div>
           </div>
           <div class="card-body">
-            <ProductForm 
-              @submit="crearProducto" 
+            <ProductForm
+              @submit="handleCreateProduct"
               :isEditing="false"
             />
           </div>
@@ -30,11 +35,23 @@ export default {
   },
   methods: {
     ...mapActions(useProductoStore, ['crearProducto']),
-    
-    crearProducto(producto) {
-      this.crearProducto(producto)
-      this.$router.push('/productos')
+
+    async handleCreateProduct(productoData) {
+      try {
+        await this.crearProducto(productoData)
+        this.$router.push('/productos')
+      } catch (error) {
+        console.error('Error al crear producto:', error)
+        alert('Error al crear el producto. Intenta nuevamente.')
+      }
     }
   }
 }
 </script>
+
+<style scoped>
+.card {
+  border: none;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+</style>

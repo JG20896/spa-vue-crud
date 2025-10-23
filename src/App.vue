@@ -1,43 +1,89 @@
-<template>
++}<template>
   <div id="app">
-    <Navigation />
-    <main class="container mt-4">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+      <div class="container">
+        <router-link class="navbar-brand fw-bold" to="/">
+          🛍️ Mi Tienda Online
+        </router-link>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <div class="navbar-nav ms-auto">
+            <router-link class="nav-link" to="/productos">
+              📦 Productos
+            </router-link>
+            <router-link class="nav-link" to="/about">
+              ℹ️ Acerca de
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="container-fluid py-4">
       <router-view />
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <h5>🛍️ Mi Tienda Online</h5>
+            <p class="mb-0">La mejor solución para gestión de productos</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <router-link to="/about" class="btn btn-outline-light btn-sm">
+              👨‍💻 Conoce al equipo
+            </router-link>
+          </div>
+        </div>
+        <div class="text-center mt-3 pt-3 border-top">
+          <p class="mb-0">&copy; 2024 Mi Tienda Online. Desarrollado con ❤️ usando Vue.js 3</p>
+        </div>
+      </div>
+    </footer>
   </div>
 </template>
 
 <script>
-import Navigation from './components/Navigation.vue'
-
 export default {
-  name: 'App',
-  components: {
-    Navigation
-  }
+  name: 'App'
 }
 </script>
 
 <style>
 #app {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
-  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
 }
 
-.container {
-  min-height: calc(100vh - 76px);
+main {
+  flex: 1;
 }
 
-.card {
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: box-shadow 0.3s ease;
+.navbar-brand {
+  font-size: 1.5rem;
 }
 
-.card:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+.nav-link {
+  font-weight: 500;
+  transition: color 0.3s ease;
+  margin: 0 0.5rem;
 }
 
-.btn {
-  border-radius: 6px;
+.nav-link:hover {
+  color: rgba(255,255,255,0.8) !important;
+}
+
+footer {
+  margin-top: auto;
 }
 </style>

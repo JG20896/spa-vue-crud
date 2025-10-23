@@ -1,36 +1,40 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import ProductsView from '../views/ProductsView.vue'
+import ProductosView from '../views/ProductosView.vue'
 import CreateProductView from '../views/CreateProductView.vue'
 import EditProductView from '../views/EditProductView.vue'
-import CartView from '../views/CartView.vue'
+import AboutView from '../views/AboutView.vue'
+import CarritoView from '../views/CarritoView.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
     path: '/productos',
-    name: 'products',
-    component: ProductsView
+    name: 'Productos',
+    component: ProductosView
   },
   {
     path: '/productos/crear',
-    name: 'create-product',
+    name: 'CreateProduct',
     component: CreateProductView
   },
   {
     path: '/productos/:id',
-    name: 'edit-product',
+    name: 'EditProduct',
     component: EditProductView,
     props: true
   },
   {
+    path: '/about',
+    name: 'About',
+    component: AboutView
+  },
+  {
     path: '/carrito',
-    name: 'cart',
-    component: CartView
+    name: 'Carrito',
+    component: CarritoView
+  },
+  {
+    path: '/',
+    redirect: '/productos'
   }
 ]
 

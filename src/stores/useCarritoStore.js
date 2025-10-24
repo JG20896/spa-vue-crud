@@ -16,54 +16,28 @@ export const useCarritoStore = defineStore('carrito', {
     
     totalPrecio: (state) => {
       return state.items.reduce((total, item) => total + item.precio, 0)
-    },
-    
-    itemsAgrupados: (state) => {
-      const agrupados = state.items.reduce((grupos, item) => {
-        const existente = grupos.find(g => g.id === item.id)
-        if (existente) {
-          existente.cantidad++
-          existente.subtotal = existente.precio * existente.cantidad
-        } else {
-          grupos.push({
-            ...item,
-            cantidad: 1,
-            subtotal: item.precio
-          })
-        }
-        return grupos
-      }, [])
-      
-      return agrupados
     }
   },
 
   actions: {
     agregarAlCarrito(producto) {
-      this.items.push({ ...producto })
+      if (!this.estaEnCarrito(producto.id)) {
+        this.items.push({ ...producto })
+        console.log('✅ Producto agregado al carrito:', producto.nombre)
+      } else {
+        console.log('⚠️ Producto ya está en el carrito:', producto.nombre)
+      }
     },
 
     removerDelCarrito(id) {
       this.items = this.items.filter(item => item.id !== id)
+      console.log('🗑️ Producto removido del carrito, ID:', id)
     },
 
     limpiarCarrito() {
       if (confirm('¿Estás seguro de que quieres vaciar el carrito?')) {
         this.items = []
-      }
-    },
-    
-    aumentarCantidad(id) {
-      const item = this.items.find(item => item.id === id)
-      if (item) {
-        this.items.push({ ...item })
-      }
-    },
-    
-    disminuirCantidad(id) {
-      const index = this.items.findIndex(item => item.id === id)
-      if (index !== -1) {
-        this.items.splice(index, 1)
+        console.log('🔄 Carrito limpiado')
       }
     }
   }

@@ -21,7 +21,7 @@
       <div class="col-md-6">
         <div class="mb-3">
           <label for="categoria" class="form-label">🏷️ Categoría</label>
-          <select class="form-select" id="categoria" v-model="formData.categoria" required @change="sugerirImagen">
+          <select class="form-select" id="categoria" v-model="formData.categoria" required>
             <option value="">Selecciona una categoría</option>
             <option value="Tecnología">Tecnología</option>
             <option value="Audio">Audio</option>
@@ -62,7 +62,7 @@
               type="number" 
               class="form-control" 
               id="precio" 
-              v-model="formData.precio"
+              v-model.number="formData.precio"
               step="0.01"
               min="0"
               required
@@ -83,57 +83,26 @@
             class="form-control" 
             id="imagen" 
             v-model="formData.imagen"
-            required
             placeholder="https://images.unsplash.com/photo-..."
           >
           <div class="form-text">
-            <small>
-              <strong>Sugerencias por categoría:</strong><br>
-              • Tecnología: photos de laptops, phones, tablets<br>
-              • Audio: photos de auriculares, altavoces<br>
-              • Gaming: photos de teclados, consolas<br>
-              • Fotografía: photos de cámaras, drones
-            </small>
-          </div>
-          <div class="invalid-feedback">
-            Por favor ingresa una URL válida para la imagen.
+            Usa servicios como Unsplash para imágenes realistas (opcional).
           </div>
         </div>
       </div>
     </div>
 
     <!-- Vista previa de la imagen -->
-    <div v-if="formData.imagen" class="mb-4">
+    <div class="mb-4">
       <label class="form-label">👁️ Vista Previa</label>
       <div class="image-preview">
         <img 
-          :src="formData.imagen" 
+          :src="effectiveImageUrl" 
           alt="Vista previa" 
           class="img-thumbnail"
           @error="handleImageError"
-          style="max-height: 200px;"
+          style="max-height: 200px; max-width: 100%;"
         >
-        <div v-if="!imagenCargada" class="mt-2">
-          <small class="text-warning">⚠️ La imagen no se pudo cargar. Verifica la URL.</small>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sugerencias de imágenes por categoría -->
-    <div v-if="!isEditing" class="mb-4">
-      <label class="form-label">💡 Imágenes Sugeridas</label>
-      <div class="row g-2">
-        <div class="col-4 col-md-2" v-for="(sugerencia, index) in imagenesSugeridas" :key="index">
-          <div class="sugerencia-imagen" @click="seleccionarImagen(sugerencia.url)">
-            <img 
-              :src="sugerencia.url" 
-              :alt="sugerencia.descripcion"
-              class="img-thumbnail"
-              style="height: 60px; object-fit: cover; cursor: pointer;"
-            >
-            <small class="d-block text-center">{{ sugerencia.descripcion }}</small>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -141,7 +110,8 @@
       <router-link to="/productos" class="btn btn-secondary">
         ❌ Cancelar
       </router-link>
-      <button type="submit" class="btn btn-primary">
+      <button type="submit" class="btn btn-primary" :disabled="loading">
+        <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>
         {{ isEditing ? '💾 Actualizar Producto' : '✅ Crear Producto' }}
       </button>
     </div>
@@ -170,33 +140,16 @@ export default {
         categoria: '',
         imagen: ''
       },
-      imagenCargada: true,
-      imagenesSugeridas: [
-        {
-          url: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400&h=300&fit=crop',
-          descripcion: 'Laptop'
-        },
-        {
-          url: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop',
-          descripcion: 'Smartphone'
-        },
-        {
-          url: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop',
-          descripcion: 'Auriculares'
-        },
-        {
-          url: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&h=300&fit=crop',
-          descripcion: 'Tablet'
-        },
-        {
-          url: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop',
-          descripcion: 'Smartwatch'
-        },
-        {
-          url: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=300&fit=crop',
-          descripcion: 'Cámara'
-        }
-      ]
+      loading: false
+    }
+  },
+  computed: {
+    effectiveImageUrl() {
+      // Si hay imagen válida, usarla, sino usar placeholder local
+      if (this.formData.imagen && this.isValidUrl(this.formData.imagen)) {
+        return this.formData.imagen;
+      }
+      return this.getPlaceholderImage();
     }
   },
   watch: {
@@ -204,59 +157,75 @@ export default {
       immediate: true,
       handler(newProducto) {
         if (newProducto && this.isEditing) {
-          this.formData = { ...newProducto }
-          this.imagenCargada = true
+          this.formData = { ...newProducto };
+          console.log('📝 Formulario cargado con producto:', this.formData);
+        } else {
+          // Resetear formulario para creación
+          this.formData = {
+            nombre: '',
+            descripcion: '',
+            precio: 0,
+            categoria: '',
+            imagen: ''
+          };
+          console.log('📝 Formulario en modo creación');
         }
       }
     }
   },
   methods: {
-    submitForm() {
-      const form = this.$el
-      if (!form.checkValidity()) {
-        form.classList.add('was-validated')
-        return
+    isValidUrl(string) {
+      try {
+        new URL(string);
+        return true;
+      } catch (_) {
+        return false;
       }
-      
-      this.$emit('submit', this.formData)
     },
-    
+
+    getPlaceholderImage() {
+      // Data URL SVG como placeholder local
+      return 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiNGMEYwRjAiLz48cGF0aCBkPSJNMTIwIDEyMEgxODBWMTgwSDEyMFYxMjBaIiBmaWxsPSIjQzhDOEM4Ii8+PHBhdGggZD0iTTIyMCAxMjBIMjgwVjE4MEgyMjBWMTIwWiIgZmlsbD0iI0M4QzhDOCIvPjxwYXRoIGQ9Ik0xMjAgMjAwSDE4MFYyNjBIMTIwVjIwMFoiIGZpbGw9IiNDOEM4QzgiLz48cGF0aCBkPSJNMjIwIDIwMEgyODBWMjYwSDIyMFYyMDBaIiBmaWxsPSIjQzhDOEM4Ii8+PHRleHQgeD0iMjAwIiB5PSIyODAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzY2NiI+SW1hZ2VuIGRlbCBQcm9kdWN0bzwvdGV4dD48L3N2Zz4=';
+    },
+
     handleImageError(event) {
-      this.imagenCargada = false
-      event.target.style.display = 'none'
+      console.log('🔄 Cargando imagen de placeholder local');
+      event.target.src = this.getPlaceholderImage();
     },
-    
-    seleccionarImagen(url) {
-      this.formData.imagen = url
-      this.imagenCargada = true
-    },
-    
-    sugerirImagen() {
-      // Sugerir imagen basada en la categoría seleccionada
-      const sugerencias = {
-        'Tecnología': [
-          'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400&h=300&fit=crop',
-          'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop',
-          'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&h=300&fit=crop'
-        ],
-        'Audio': [
-          'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop',
-          'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=300&fit=crop'
-        ],
-        'Gaming': [
-          'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=400&h=300&fit=crop',
-          'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=300&fit=crop'
-        ],
-        'Fotografía': [
-          'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=300&fit=crop',
-          'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=400&h=300&fit=crop'
-        ]
-      }
+
+    async submitForm() {
+      const form = this.$el;
       
-      if (sugerencias[this.formData.categoria] && !this.isEditing) {
-        this.formData.imagen = sugerencias[this.formData.categoria][0]
+      // Validar formulario
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        console.log('❌ Formulario inválido');
+        return;
+      }
+
+      this.loading = true;
+      
+      try {
+        console.log('✅ Formulario válido, enviando datos:', this.formData);
+        
+        // Crear copia limpia de los datos
+        const datosEnvio = {
+          ...this.formData,
+          precio: parseFloat(this.formData.precio) // Asegurar que sea número
+        };
+        
+        // Emitir evento solo una vez
+        this.$emit('submit', datosEnvio);
+        
+      } catch (error) {
+        console.error('❌ Error al enviar formulario:', error);
+      } finally {
+        this.loading = false;
       }
     }
+  },
+  mounted() {
+    console.log('🏁 ProductForm montado, isEditing:', this.isEditing);
   }
 }
 </script>
@@ -267,29 +236,11 @@ export default {
   padding: 1rem;
   background: #f8f9fa;
   border-radius: 0.375rem;
+  border: 1px solid #dee2e6;
 }
 
-.sugerencia-imagen {
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.sugerencia-imagen:hover {
-  transform: scale(1.05);
-}
-
-.sugerencia-imagen small {
-  font-size: 0.7rem;
-  line-height: 1.2;
-}
-
-.needs-validation .form-control:invalid,
-.needs-validation .form-select:invalid {
-  border-color: #dc3545;
-}
-
-.was-validated .form-control:invalid,
-.was-validated .form-select:invalid {
-  border-color: #dc3545;
+.spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
 }
 </style>

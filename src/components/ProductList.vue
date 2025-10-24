@@ -7,8 +7,8 @@
             :src="producto.imagen" 
             class="card-img-top" 
             :alt="producto.nombre" 
+            style="height: 200px; object-fit: cover;"
             @error="handleImageError"
-            loading="lazy"
           >
           <div class="image-overlay">
             <span class="badge bg-primary">{{ producto.categoria }}</span>
@@ -17,7 +17,7 @@
         
         <div class="card-body d-flex flex-column">
           <h5 class="card-title">{{ producto.nombre }}</h5>
-          <p class="card-text flex-grow-1 text-muted">{{ producto.descripcion }}</p>
+          <p class="card-text flex-grow-1">{{ producto.descripcion }}</p>
           
           <div class="product-info">
             <div class="price-tag">
@@ -39,13 +39,13 @@
                 :to="`/productos/${producto.id}`" 
                 class="btn btn-outline-warning"
               >
-                ✏️
+                ✏️ Editar
               </router-link>
               <button 
                 @click="confirmarEliminacion(producto.id)" 
                 class="btn btn-outline-danger"
               >
-                🗑️
+                🗑️ Eliminar
               </button>
             </div>
           </div>
@@ -65,8 +65,7 @@ export default {
   props: {
     productos: {
       type: Array,
-      required: true,
-      default: () => []
+      required: true
     }
   },
   computed: {
@@ -77,14 +76,23 @@ export default {
     ...mapActions(useCarritoStore, ['agregarAlCarrito']),
     
     handleImageError(event) {
-      event.target.src = `https://picsum.photos/400/300?random=${Math.random() * 1000}`
+      event.target.src = 'https://via.placeholder.com/400x300?text=Imagen+No+Disponible'
     },
     
     confirmarEliminacion(id) {
+      console.log('Intentando eliminar producto ID:', id)
       if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+        console.log('Confirmado, eliminando producto...')
         this.eliminarProducto(id)
+        console.log('Producto eliminado')
+      } else {
+        console.log('Eliminación cancelada')
       }
     }
+  },
+  mounted() {
+    console.log('ProductList montado')
+    console.log('Productos recibidos:', this.productos)
   }
 }
 </script>
@@ -104,16 +112,6 @@ export default {
 .image-container {
   position: relative;
   overflow: hidden;
-}
-
-.image-container img {
-  transition: transform 0.3s ease;
-  height: 200px;
-  object-fit: cover;
-}
-
-.product-card:hover .image-container img {
-  transform: scale(1.05);
 }
 
 .image-overlay {

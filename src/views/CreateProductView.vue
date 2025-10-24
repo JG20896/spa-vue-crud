@@ -38,13 +38,18 @@ export default {
 
     async handleCreateProduct(productoData) {
       try {
+        console.log('🔄 Creando producto:', productoData)
         await this.crearProducto(productoData)
+        console.log('✅ Producto creado exitosamente')
         this.$router.push('/productos')
       } catch (error) {
-        console.error('Error al crear producto:', error)
+        console.error('❌ Error al crear producto:', error)
         alert('Error al crear el producto. Intenta nuevamente.')
       }
     }
+  },
+  mounted() {
+    console.log('🏁 CreateProductView montado')
   }
 }
 </script>

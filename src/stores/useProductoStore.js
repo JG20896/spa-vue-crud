@@ -5,131 +5,94 @@ export const useProductoStore = defineStore('producto', {
     productos: [
       {
         id: 1,
-        nombre: 'Laptop Gaming',
-        descripcion: 'Laptop para gaming de alta gama con RTX 4080, 32GB RAM y SSD 1TB',
-        precio: 1200,
-        categoria: 'Tecnología',
-        imagen: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=400&h=300&fit=crop'
+        nombre: "Samsung Galaxy S24 Ultra",
+        descripcion: "Flagship con S-Pen, cámara de 200MP, Snapdragon 8 Gen 3, 12GB RAM, 512GB almacenamiento, pantalla Dynamic AMOLED 2X de 6.8 pulgadas, resistencia al agua IP68, carga rápida de 45W",
+        precio: 1299.99,
+        categoria: "Tecnología",
+        imagen: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=300&fit=crop",
+        stock: 15
       },
       {
         id: 2,
-        nombre: 'Smartphone',
-        descripcion: 'Teléfono inteligente última generación con cámara 108MP y 5G',
-        precio: 800,
-        categoria: 'Tecnología',
-        imagen: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop'
+        nombre: "Sony WH-1000XM5",
+        descripcion: "Audífonos noise cancelling líderes en el mercado, 30 horas de batería, sonido Hi-Res, cancelación de ruido adaptativa, calidad de llamadas cristalina, control táctil, asistente de voz integrado",
+        precio: 399.99,
+        categoria: "Audio",
+        imagen: "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=300&fit=crop",
+        stock: 25
       },
       {
         id: 3,
-        nombre: 'Auriculares Bluetooth',
-        descripcion: 'Auriculares inalámbricos con cancelación de ruido activa y 30h de batería',
-        precio: 150,
-        categoria: 'Audio',
-        imagen: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=300&fit=crop'
+        nombre: "MacBook Pro 16\" M3 Max",
+        descripcion: "Laptop profesional con chip M3 Max, 48GB RAM, 1TB SSD, pantalla Liquid Retina XDR de 16.2 pulgadas, 22 horas de batería, 12 núcleos CPU y 40 núcleos GPU, ideal para creativos y desarrolladores",
+        precio: 3499.99,
+        categoria: "Tecnología",
+        imagen: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=300&fit=crop",
+        stock: 8
       },
       {
         id: 4,
-        nombre: 'Tablet',
-        descripcion: 'Tablet para trabajo y entretenimiento con pantalla 10.5" y stylus incluido',
-        precio: 500,
-        categoria: 'Tecnología',
-        imagen: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&h=300&fit=crop'
-      },
-      {
-        id: 5,
-        nombre: 'Smartwatch',
-        descripcion: 'Reloj inteligente con monitor de salud, GPS y resistencia al agua',
-        precio: 300,
-        categoria: 'Tecnología',
-        imagen: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop'
-      },
-      {
-        id: 6,
-        nombre: 'Cámara Digital',
-        descripcion: 'Cámara profesional 4K con lente intercambiable y estabilización de imagen',
-        precio: 950,
-        categoria: 'Fotografía',
-        imagen: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=300&fit=crop'
-      },
-      {
-        id: 7,
-        nombre: 'Teclado Mecánico',
-        descripcion: 'Teclado gaming mecánico RGB con switches azules y reposamuñecas',
-        precio: 120,
-        categoria: 'Gaming',
-        imagen: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=400&h=300&fit=crop'
-      },
-      {
-        id: 8,
-        nombre: 'Monitor 4K',
-        descripcion: 'Monitor ultra HD 32 pulgadas con tasa de refresco 144Hz y HDR',
-        precio: 450,
-        categoria: 'Tecnología',
-        imagen: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&h=300&fit=crop'
-      },
-      {
-        id: 9,
-        nombre: 'Consola Gaming',
-        descripcion: 'Consola de última generación con 1TB SSD y mando inalámbrico',
-        precio: 499,
-        categoria: 'Gaming',
-        imagen: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=400&h=300&fit=crop'
-      },
-      {
-        id: 10,
-        nombre: 'Altavoz Bluetooth',
-        descripcion: 'Altavoz portátil con sonido surround y resistencia al agua IPX7',
-        precio: 89,
-        categoria: 'Audio',
-        imagen: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=300&fit=crop'
-      },
-      {
-        id: 11,
-        nombre: 'Drone Profesional',
-        descripcion: 'Drone con cámara 4K, GPS y tiempo de vuelo de 30 minutos',
-        precio: 799,
-        categoria: 'Tecnología',
-        imagen: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=400&h=300&fit=crop'
-      },
-      {
-        id: 12,
-        nombre: 'Impresora 3D',
-        descripcion: 'Impresora 3D de resina con alta precisión y volumen de impresión 200x200x200mm',
-        precio: 350,
-        categoria: 'Tecnología',
-        imagen: 'https://images.unsplash.com/photo-1581093458791-8a6c6bc30ba2?w=400&h=300&fit=crop'
+        nombre: "Apple Watch Series 9",
+        descripcion: "Reloj inteligente con chip S9, pantalla Retina Always-On, GPS, monitor de sueño y oxígeno en sangre, resistente al agua 50m, notificaciones inteligentes, compatible con iPhone, 18 horas de batería",
+        precio: 429.99,
+        categoria: "Tecnología",
+        imagen: "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=400&h=300&fit=crop",
+        stock: 20
       }
     ]
   }),
 
   actions: {
     crearProducto(producto) {
+      console.log('🔄 CREANDO PRODUCTO EN STORE:', producto)
       const nuevoProducto = {
         ...producto,
-        id: Date.now()
+        id: Date.now(), // ID único
+        precio: parseFloat(producto.precio),
+        stock: parseInt(producto.stock) || 0
       }
       this.productos.push(nuevoProducto)
+      console.log('✅ PRODUCTO CREADO. Total productos:', this.productos.length)
+      return nuevoProducto
     },
 
     actualizarProducto(id, productoActualizado) {
+      console.log('🔄 ACTUALIZANDO PRODUCTO ID:', id, 'DATOS:', productoActualizado)
       const index = this.productos.findIndex(p => p.id === id)
       if (index !== -1) {
-        this.productos[index] = { ...productoActualizado, id }
+        this.productos[index] = { 
+          ...productoActualizado, 
+          id,
+          precio: parseFloat(productoActualizado.precio),
+          stock: parseInt(productoActualizado.stock) || 0
+        }
+        console.log('✅ PRODUCTO ACTUALIZADO:', this.productos[index])
+        return this.productos[index]
+      } else {
+        console.error('❌ PRODUCTO NO ENCONTRADO PARA ACTUALIZAR:', id)
+        throw new Error(`Producto con ID ${id} no encontrado`)
       }
     },
 
     eliminarProducto(id) {
-      this.productos = this.productos.filter(p => p.id !== id)
+      console.log('🗑️ ELIMINANDO PRODUCTO ID:', id)
+      const index = this.productos.findIndex(p => p.id === id)
+      if (index !== -1) {
+        const productoEliminado = this.productos.splice(index, 1)[0]
+        console.log('✅ PRODUCTO ELIMINADO. Total productos:', this.productos.length)
+        return productoEliminado
+      } else {
+        console.error('❌ PRODUCTO NO ENCONTRADO PARA ELIMINAR:', id)
+        throw new Error(`Producto con ID ${id} no encontrado`)
+      }
     }
   },
 
   getters: {
     obtenerProductoPorId: (state) => (id) => {
-      return state.productos.find(producto => producto.id === id)
-    },
-    
-    productosPorCategoria: (state) => (categoria) => {
-      return state.productos.filter(producto => producto.categoria === categoria)
+      const producto = state.productos.find(producto => producto.id === parseInt(id))
+      console.log('🔍 BUSCANDO PRODUCTO ID:', id, 'ENCONTRADO:', producto)
+      return producto
     }
   }
 })
